@@ -1,6 +1,7 @@
 version: "3.3"
 services:
   mysql-keyclock:
+    container_name: mysql-keyclock
     image: mysql:8.0.19
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -8,9 +9,9 @@ services:
       MYSQL_ROOT_PASSWORD: rootpsw
       MYSQL_DATABASE: keycloak
       MYSQL_PASSWORD: keypsw
-    networks:
-      keycloak-network
   keycloak:
+    container_name: keycloak
+    image: jboss/keycloak
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: saman
@@ -18,32 +19,21 @@ services:
       DB_ADDR: mysql-keyclock
       DB_USER: keycloak
       DB_PASSWORD: keypsw
-    networks:
-      keycloak-network
+      WAIT_HOSTS: mysql-keyclock:3306
     ports:
       - 8080:8080
     expose:
       - "8080"
+    links:
+      - mysql-keyclock
     depends_on:
-      - db
-#  knimer:
-#    build: .
-#    network_mode: host
-#    restart: on-failure
-#    ports:
-#      - 8090:8090
-#    expose:
-#      - "8090"
-#    volumes:
-#      - "~/.m2/repository/:/root/.m2/repository/"
-#    depends_on:
-#      - db
+      - mysql-keyclock
+#networks:
+#  default:
+#    internal:
+#      name: test-1
 
-networks:
-  default:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.177.57.0/24
+
+
 
 
