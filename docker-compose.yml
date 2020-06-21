@@ -1,49 +1,35 @@
 version: "2.1"
 services:
-  mysql-keyclock:
-    container_name: mysql-keyclock
+  mysql-knimer:
     image: mysql:8.0.19
+    container_name: mysql-knimer
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - "3306"
     environment:
-#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_PASSWORD: rootpsw
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: keypsw
+      MYSQL_DATABASE: knimer
+      MYSQL_USER: knimer
+      MYSQL_PASSWORD: knimerpsw
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-  keycloak:
-    container_name: keycloak
-    image: jboss/keycloak
-    environment:
-      PROXY_ADDRESS_FORWARDING: "true"
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: saman
-      JDBC_PARAMS: "useSSL=false"
-      DB_VENDOR: mysql
-      DB_ADDR: mysql-keyclock
-      DB_SCHEMA: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: keypsw
+  knimer:
+    build: .
+    restart: on-failure
     ports:
-      - 8080:8080
+      - 8081:8081
     expose:
-      - "8080"
+      - "8081"
     links:
-      - mysql-keyclock
+      - "mysql-knimer:database"
     depends_on:
-      mysql-keyclock:
+      mysql-knimer:
         condition: service_healthy
-#networks:
-#  default:
-#    internal:
-#      name: test-1
-
-
-
 
 
 

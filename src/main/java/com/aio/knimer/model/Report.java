@@ -23,10 +23,10 @@ public class Report {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  private ChartType chartType;
   private String reportTypeCode;
   private LocalDate reportDate;
   @Type(type = "jsonb")
   private String jsonData;
-
 
 }

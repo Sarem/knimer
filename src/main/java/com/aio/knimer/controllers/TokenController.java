@@ -49,12 +49,12 @@ public class TokenController {
   }
 
   @GetMapping("/report/{code}")
-  public List<String> getReport
+  public List<Report> getReport
       (@PathVariable String code, @AuthenticationPrincipal KeycloakAuthenticationToken token) {
     Optional<String> optionalCode = token.getAuthorities().stream() //
         .map(GrantedAuthority::getAuthority).filter(s -> s.equalsIgnoreCase(code)).findFirst();
-    return reportService.getReports(optionalCode.get())
-        .stream().map(Report::getJsonData).collect(Collectors.toList());
+    return reportService.getReports(optionalCode.get());
+//        .stream().map(Report::getJsonData).collect(Collectors.toList());
 
 //    return reportService.getReports(code)
 //        .stream().map(Report::getJsonData).collect(Collectors.toList());

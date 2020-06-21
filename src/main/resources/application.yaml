@@ -1,6 +1,6 @@
 keycloak:
 #  auth-server-url: http://127.0.0.1:8080/auth
-  auth-server-url: http://10.251.103.3:8080/auth
+  auth-server-url: http://185.133.152.195:8080/auth
   principal-attribute: preferred_username
   public-client: true
   realm: knimer
@@ -12,11 +12,12 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/knimer?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-    username: root
-    password: snapp
+    url: jdbc:mysql://mysql-knimer:3306/knimer?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+#    url: jdbc:mysql://localhost:3306/knimer?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: knimer
+    password: knimerpsw
   jpa:
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:

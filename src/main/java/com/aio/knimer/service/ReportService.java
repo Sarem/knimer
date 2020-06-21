@@ -1,5 +1,6 @@
 package com.aio.knimer.service;
 
+import com.aio.knimer.model.ChartType;
 import com.aio.knimer.model.QReport;
 import com.aio.knimer.model.Report;
 import com.aio.knimer.repository.ReportRepository;
@@ -43,8 +44,7 @@ public class ReportService {
   public void insertTestData() {
 
     List<Report> reports=new ArrayList<>();
-    Report report1 = new Report(null, "REPORT_A", LocalDate.now().minusDays(3), "{\n" +
-        "    \"\": \"1/21/20\",\n" +
+    Report report1 = new Report(null, ChartType.Line_chart, "REPORT_A", LocalDate.now().minusDays(3), "{\n" +
         "    \"Android\": 300,\n" +
         "    \"STB\": 183,\n" +
         "    \"Samsung\": 117,\n" +
@@ -52,8 +52,7 @@ public class ReportService {
         "    \"IOS\": 17\n" +
         "  }");
     reports.add(report1);
-    Report report2 = new Report(null, "REPORT_A", LocalDate.now().minusDays(2), "{\n" +
-        "    \"\": \"1/22/20\",\n" +
+    Report report2 = new Report(null,ChartType.Line_chart, "REPORT_A", LocalDate.now().minusDays(2), "{\n" +
         "    \"Android\": 405,\n" +
         "    \"STB\": 197,\n" +
         "    \"Samsung\": 122,\n" +
@@ -61,8 +60,7 @@ public class ReportService {
         "    \"IOS\": 12\n" +
         "  }");
     reports.add(report2);
-    Report report3 = new Report(null, "REPORT_A", LocalDate.now().minusDays(1), "{\n" +
-        "    \"\": \"1/23/20\",\n" +
+    Report report3 = new Report(null,ChartType.Line_chart, "REPORT_A", LocalDate.now().minusDays(1), "{\n" +
         "    \"Android\": 356,\n" +
         "    \"STB\": 191,\n" +
         "    \"Samsung\": 126,\n" +
@@ -70,8 +68,6 @@ public class ReportService {
         "    \"IOS\": 19\n" +
         "  }");
     reports.add(report3);
-
-
 
     reportRepository.saveAll(reports);
   }
