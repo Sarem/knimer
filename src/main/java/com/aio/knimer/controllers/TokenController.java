@@ -9,18 +9,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TokenController {
 
   private ReportService reportService;
@@ -60,6 +60,13 @@ public class TokenController {
 //        .stream().map(Report::getJsonData).collect(Collectors.toList());
   }
 
+  @GetMapping("/authority")
+  public List<String> getAuthority
+          (@AuthenticationPrincipal KeycloakAuthenticationToken token) {
+    return token.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority).filter(s -> !(s.equals("offline_access")||s.equals("uma_authorization"))).collect(Collectors.toList());
+  }
+
   @GetMapping("/report-period/{code}/{from}/{to}")
   public List<String> getReportPeriod
       (@PathVariable String code, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -70,4 +77,5 @@ public class TokenController {
     return reportService.getReports(optionalCode.get(), from, to)
         .stream().map(Report::getJsonData).collect(Collectors.toList());
   }
+
 }

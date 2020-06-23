@@ -5,6 +5,9 @@ keycloak:
   public-client: true
   realm: knimer
   resource: knimer-service
+  cors: true
+#  allow-any-hostname: true
+#  bearer-only: true
 server:
   port: 8081
 spring:
