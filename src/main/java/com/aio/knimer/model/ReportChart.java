@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @Data
@@ -20,13 +19,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @TypeDef(name = "jsonb", typeClass = JsonBlobType.class)
-public class Report {
+public class ReportChart {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String reportTypeCode;
-  private LocalDateTime reportDate;
-  @Type(type = "jsonb")
-  private String jsonData;
-
+  private String reportName;
+  private ChartType chartType;
 }

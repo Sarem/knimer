@@ -1,8 +1,9 @@
 package com.aio.knimer.controllers;
 
+import com.aio.knimer.model.ChartType;
 import com.aio.knimer.model.Report;
+import com.aio.knimer.model.ReportChart;
 import com.aio.knimer.service.ReportService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,11 +13,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @AllArgsConstructor
@@ -31,23 +31,27 @@ public class TokenController {
     return JWTUtil.getJWTToken();
   }
 
+  @Deprecated//test method
   @PreAuthorize("hasAuthority('REPORT_B')")
   @GetMapping("/custom-b")
   public String helloB() {
     return "hello B";
   }
 
+  @Deprecated//test method
   @PreAuthorize("hasAuthority('REPORT_A')")
   @GetMapping("/custom-a")
   public String helloA() {
     return "hello A";
   }
 
-  @GetMapping("/test")
-  public void test() {
+  @Deprecated//test method
+  @GetMapping("/init-test-data")
+  public void initTestData() {
     reportService.insertTestData();
   }
 
+  @Deprecated//move to report controller
   @GetMapping("/report/{code}")
   public List<Report> getReport
       (@PathVariable String code, @AuthenticationPrincipal KeycloakAuthenticationToken token) {
@@ -67,10 +71,13 @@ public class TokenController {
             .map(GrantedAuthority::getAuthority).filter(s -> !(s.equals("offline_access")||s.equals("uma_authorization"))).collect(Collectors.toList());
   }
 
+
+
+  @Deprecated//move to report controller
   @GetMapping("/report-period/{code}/{from}/{to}")
   public List<String> getReportPeriod
-      (@PathVariable String code, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-       @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+      (@PathVariable String code, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+       @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
        @AuthenticationPrincipal KeycloakAuthenticationToken token) {
     Optional<String> optionalCode = token.getAuthorities().stream() //
         .map(GrantedAuthority::getAuthority).filter(s -> s.equalsIgnoreCase(code)).findFirst();
